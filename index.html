@@ -12,22 +12,28 @@
 <div id="demo"></div>
 <script type="text/babel">
     console.log(React);
+    var ItemComponent = React.createClass({
+        render:function () {
+            return (
+                    <li>{this.props.item}</li>
+            )
+        }
+    });
     var ListComponent = React.createClass({
         render:function () {
             return (
                     <div>
                         <ul>
-                            <li>1</li>
                             {
                                 this.props.listArr.map(function (item,index) {
-                                    return <li key={index}>{item}</li>
+                                    return <ItemComponent key={index} item={item}/>
                                 })
                             }
                         </ul>
                     </div>
             )
         }
-    })
+    });
     var FirstComponent = React.createClass({//组件名称首字母必须大写
         //mixins:[React.addons.LinkedStateMixin],
         getInitialState:function () {
