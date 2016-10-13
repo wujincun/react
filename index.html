@@ -43,7 +43,7 @@
             }
         },
         render:function () {
-            return (//一个组件里只能有一个定存标签  ：
+            return (//一个组件里只能有一个定存标签：
                     <div>
                         <h1>{this.props.title}</h1>
                         <input type="text" ref="text_input" value={this.state.mes} onChange={this.changeHandle}/>
@@ -51,12 +51,18 @@
                         <p>{this.state.mes}</p>
                         <ListComponent listArr={this.state.listArr}/>
                     </div>
+                    //ListComponent组件状态发生改变，重新渲染，因此数据放到数组里就会重新渲染
+                    //react会自动把组件当成状态
             )
         },
         addItemHandle:function () {
             var value = this.refs.text_input.value;
-            var newArr = this.state.listArr.concat([value]);//当用this.state.listArr.push(value)时，报错，甚至调试时this.state.listArr都不是数组？？？？
-            this.setState({listArr:newArr})
+            if(value.trim() != ''){
+                var newArr = this.state.listArr.concat([value]);//当用this.state.listArr.push(value)时，报错，甚至调试时this.state.listArr都不是数组？？？？
+                this.setState({listArr:newArr})
+            }else{
+                alert('输入为空')
+            }
         },
         //事件名称必须驼峰命名
         //双向数据绑定和angelar不同，只是改变状态
@@ -73,7 +79,7 @@
         value:'请输入留言',
         listArr:[1,2,3]
     };
-    console.log(ReactDOM);
+//    console.log(ReactDOM);
     ReactDOM.render(<FirstComponent {...obj}/>,document.getElementById('demo'))//...传入多数据对象
 
 </script>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script src="build/react.js"></script>
+    <script src="build/react-dom.js"></script>
+    <script src="build/browser.min.js"></script>
+</head>
+<body>
+<header class="site-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>欢迎</h1>
+                <p class="lead">come here ！</p>
+            </div>
+        </div>
+    </div>
+</header>
+<div id="demo" class="container">
+
+</div>
+<script type="text/babel">
+    var ItemComponent = React.createClass({
+
+    });
+    var ListComponent = React.createClass({
+
+    });
+    var MainComponent = React.createClass({//组件名称首字母必须大写
+        render:function () {
+            return (//结构复杂的话必须加小括号，jsx规定
+
+            )
+        }
+    });
+    var obj = {
+        title : "hello world",
+        sendName : "提交",
+        value:'请输入留言',
+        listArr:[1,2,3]
+    };
+    //    console.log(ReactDOM);
+    ReactDOM.render(<FirstComponent {...obj}/>,document.getElementById('demo'))//...传入多数据对象
+
+</script>
+</body>
+</html>
