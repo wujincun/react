@@ -35,27 +35,33 @@
         }
     });
     var FirstComponent = React.createClass({//组件名称首字母必须大写
-        //mixins:[React.addons.LinkedStateMixin],
+        //mixins:[React.addons.LinkedStateMixin],用插件报错
         getInitialState:function () {
             return{
-                mes:this.props.value
+                mes:this.props.value,
+                listArr:this.props.listArr
             }
         },
         render:function () {
             return (//一个组件里只能有一个定存标签  ：
                     <div>
                         <h1>{this.props.title}</h1>
-                        <input type="text" value={this.state.mes} onChange={this.changeHandle}/>
-                        <input type="button" value={this.props.sendName}/>
+                        <input type="text" ref="text_input" value={this.state.mes} onChange={this.changeHandle}/>
+                        <input type="button" value={this.props.sendName} onClick={this.addItemHandle}/>
                         <p>{this.state.mes}</p>
-                        <ListComponent listArr={this.props.listArr}/>
+                        <ListComponent listArr={this.state.listArr}/>
                     </div>
             )
+        },
+        addItemHandle:function () {
+            var value = this.refs.text_input.value;
+            var newArr = this.state.listArr.concat([value]);//当用this.state.listArr.push(value)时，报错，甚至调试时this.state.listArr都不是数组？？？？
+            this.setState({listArr:newArr})
         },
         //事件名称必须驼峰命名
         //双向数据绑定和angelar不同，只是改变状态
         changeHandle:function (ev) {
-            console.log(ev.target.value);
+            /*console.log(ev.target.value);*/
             this.setState({
                 mes:ev.target.value
             })
@@ -66,8 +72,8 @@
         sendName : "提交",
         value:'请输入留言',
         listArr:[1,2,3]
-    }
-    console.log(ReactDOM)
+    };
+    console.log(ReactDOM);
     ReactDOM.render(<FirstComponent {...obj}/>,document.getElementById('demo'))//...传入多数据对象
 
 </script>
