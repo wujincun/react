@@ -8,6 +8,7 @@
     <script src="build/react.js"></script>
     <script src="build/react-dom.js"></script>
     <script src="build/browser.min.js"></script>
+    <script src="build/pubsub.js"></script>
 </head>
 <body>
 <header class="site-header">
@@ -28,8 +29,8 @@
         render:function () {
             return (//结构复杂的话必须加小括号，jsx规定
                 <li className="list-group-item">
-                    <div className="handle">
-                        <a href="javascript:;">删除</a>
+                    <div className="handle" style={{float:"right"}}>
+                        <a href="javascript:;" onClick={this.deleteItemHandle}>删除</a>
                     </div>
                     <p className="user">
                         <span>{this.props.userName}</span>
@@ -38,6 +39,9 @@
                     <p className="centence">{this.props.content}</p>
                 </li>
             )
+        },
+        deleteItemHandle:function (item) {
+            
         }
     });
     var ListComponent = React.createClass({
@@ -65,11 +69,11 @@
                     <form action="" className="form-horizontal">
                         <div className="form-group">
                             <label>用户名</label>
-                            <input ref="text_user" type="text" className="form-control"/>
+                            <input ref="text_user" type="text" className="form-control" placeholder="用户名"/>
                         </div>
                         <div className="form-group">
                             <label>留言内容</label>
-                            <textarea ref="text_content" rows="6" className="form-control"></textarea>
+                            <textarea ref="text_content" rows="6" className="form-control" placeholder="留言内容"></textarea>
                         </div>
                         <div className="form-group">
                             <div className="col-sm-offset-2 col-sm-10">
@@ -89,7 +93,8 @@
                 content:content,
                 _id:Date.now()
             })
-
+            this.refs.text_user.value = '';
+            this.refs.text_content.value = ''
         }
     });
     var MainComponent = React.createClass({//组件名称首字母必须大写
@@ -121,7 +126,7 @@
             content : "好啊",
             id:Date.now()+1//react承认
         }
-    ]
+    ];
 
     //    console.log(ReactDOM);
     ReactDOM.render(<MainComponent list={listArr}/>,document.getElementById('demo'))//...传入多数据对象
