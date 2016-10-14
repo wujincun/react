@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!--<link rel="stylesheet" type="text/css" href="css/main.css">-->
     <script src="build/react.js"></script>
     <script src="build/react-dom.js"></script>
     <script src="build/browser.min.js"></script>
@@ -25,26 +25,106 @@
 </div>
 <script type="text/babel">
     var ItemComponent = React.createClass({
-
-    });
-    var ListComponent = React.createClass({
-
-    });
-    var MainComponent = React.createClass({//组件名称首字母必须大写
         render:function () {
             return (//结构复杂的话必须加小括号，jsx规定
-
+                <li className="list-group-item">
+                    <div className="handle">
+                        <a href="javascript:;">删除</a>
+                    </div>
+                    <p className="user">
+                        <span>{this.props.userName}</span>
+                        <span>说：</span>
+                    </p>
+                    <p className="centence">{this.props.content}</p>
+                </li>
             )
         }
     });
-    var obj = {
-        title : "hello world",
-        sendName : "提交",
-        value:'请输入留言',
-        listArr:[1,2,3]
-    };
+    var ListComponent = React.createClass({
+        render:function () {
+            return (//结构复杂的话必须加小括号，jsx规定
+                <div className="col-md-8 col-sm-8">
+                    <h3 className="reply">留言回复：</h3>
+                    <h2 style={{display:"none"}}>暂无留言，点击左侧添加留言</h2>
+                    <ul className="list-group">
+                        {
+                            this.props.listArr.map(function (item,index) {
+                                return <ItemComponent key={index} {...item}/>
+                            })
+                        }
+                    </ul>
+                </div>
+            )
+        }
+    });
+//    消息组件
+    var MesComponent = React.createClass({
+        render:function () {
+            return (//结构复杂的话必须加小括号，jsx规定
+                <div className="col-md-4 col-sm-4">
+                    <form action="" className="form-horizontal">
+                        <div className="form-group">
+                            <label>用户名</label>
+                            <input ref="text_user" type="text" className="form-control"/>
+                        </div>
+                        <div className="form-group">
+                            <label>留言内容</label>
+                            <textarea ref="text_content" rows="6" className="form-control"></textarea>
+                        </div>
+                        <div className="form-group">
+                            <div className="col-sm-offset-2 col-sm-10">
+                                <button type="button" className="btn btn-default" onClick={this.addItemHandle}>提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            )
+        },
+        addItemHandle:function () {
+            var userName = this.refs.text_user.value;
+            var content = this.refs.text_content.value;
+
+            this.props.addItem({
+                userName:userName,
+                content:content,
+                _id:Date.now()
+            })
+
+        }
+    });
+    var MainComponent = React.createClass({//组件名称首字母必须大写
+        getInitialState:function () {
+            return {
+                list:this.props.list
+            }
+        },
+        addItem:function (data) {
+            this.state.list.push(data);
+            this.setState({list:this.state.list})
+        },
+        render:function () {
+            return (//结构复杂的话必须加小括号，jsx规定
+                <div className="container">
+                    <MesComponent addItem={this.addItem}/>
+                    <ListComponent listArr={this.state.list}/>
+                </div>
+            )
+        }
+    });
+    var listArr = [
+        {
+            userName : "多多",
+            content : "你好啊",
+            _id:Date.now()//react承认
+        },{
+            userName : "稍少",
+            content : "好啊",
+            id:Date.now()+1//react承认
+        }
+    ]
+
     //    console.log(ReactDOM);
-    ReactDOM.render(<FirstComponent {...obj}/>,document.getElementById('demo'))//...传入多数据对象
+    ReactDOM.render(<MainComponent list={listArr}/>,document.getElementById('demo'))//...传入多数据对象
 
 </script>
 </body>

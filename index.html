@@ -58,8 +58,10 @@
         addItemHandle:function () {
             var value = this.refs.text_input.value;
             if(value.trim() != ''){
-                var newArr = this.state.listArr.concat([value]);//当用this.state.listArr.push(value)时，报错，甚至调试时this.state.listArr都不是数组？？？？
-                this.setState({listArr:newArr})
+                var newArr = this.state.listArr.concat([value]);
+                this.setState({listArr:newArr});
+                /*this.state.list.push(value);
+                 this.setState({list:this.state.list})*/
             }else{
                 alert('输入为空')
             }
