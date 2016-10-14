@@ -25,6 +25,7 @@
 
 </div>
 <script type="text/babel">
+    var deleteItem = 'deleteItem';
     var ItemComponent = React.createClass({
         render:function () {
             return (//结构复杂的话必须加小括号，jsx规定
@@ -41,15 +42,17 @@
             )
         },
         deleteItemHandle:function (item) {
-            
+            console.log(this.props._id);
+            PubSub.publish(deleteItem,this.props._id)
         }
     });
     var ListComponent = React.createClass({
         render:function () {
+            var isNone = this.props.listArr.length? "none":"block";
             return (//结构复杂的话必须加小括号，jsx规定
                 <div className="col-md-8 col-sm-8">
                     <h3 className="reply">留言回复：</h3>
-                    <h2 style={{display:"none"}}>暂无留言，点击左侧添加留言</h2>
+                    <h2 style={{display:isNone}}>暂无留言，点击左侧添加留言</h2>
                     <ul className="list-group">
                         {
                             this.props.listArr.map(function (item,index) {
@@ -92,7 +95,7 @@
                 userName:userName,
                 content:content,
                 _id:Date.now()
-            })
+            });
             this.refs.text_user.value = '';
             this.refs.text_content.value = ''
         }
@@ -102,6 +105,14 @@
             return {
                 list:this.props.list
             }
+        },
+        componentDidMount:function () {
+            PubSub.subscribe(deleteItem,function (evName,data) {
+                var newArr = this.state.list.filter(function (item,index) {
+                    return item._id !== data
+                });
+                this.setState({list:newArr})
+            }.bind(this))
         },
         addItem:function (data) {
             this.state.list.push(data);
@@ -124,7 +135,7 @@
         },{
             userName : "稍少",
             content : "好啊",
-            id:Date.now()+1//react承认
+            _id:Date.now()+1//react承认
         }
     ];
 
